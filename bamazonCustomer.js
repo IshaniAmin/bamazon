@@ -1,3 +1,4 @@
+
 var express = require("express");
 var inquirer = require('inquirer');
 
@@ -11,6 +12,7 @@ var connection = mysql.createConnection({
 });
  
 connection.connect();
+
 
 
 
