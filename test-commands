@@ -32,7 +32,7 @@ FOREIGN KEY(product_id) references products(id)
 );
 
 -----------------------------------------------------------------
-
+-- values to insert
 
 INSERT INTO departments (department_name, over_head_costs) VALUES ('Shoes', 100);
 INSERT INTO departments (department_name, over_head_costs) VALUES ('Clothing', 100);
