@@ -19,3 +19,5 @@ INSERT INTO products (product, department_id, price, stock_quantity) VALUES ('Sh
 INSERT INTO products (product, department_id, price, stock_quantity) VALUES ('Belts', 3, 10.00, 100);
 INSERT INTO products (product, department_id, price, stock_quantity) VALUES ('Handbags', 3, 15.00, 100);
 INSERT INTO products (product, department_id, price, stock_quantity) VALUES ('Scarf', 3, 15.00, 100);
+
+INSERT INTO sales (product_id, quantity_purchased, created_at) VALUES (, , NOW());

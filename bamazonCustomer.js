@@ -13,6 +13,8 @@ var connection = mysql.createConnection({
  
 connection.connect();
 
+
+
 // Showing user all the products available for sale
 connection.query("SELECT * from products", function (error, results) {
   	if (error) throw error;
@@ -58,8 +60,16 @@ connection.query("SELECT * from products", function (error, results) {
                 id: product.id
             }], function(err, res) {
                 if (err) throw err;
-                console.log("UPDATE");
+                console.log("PRODUCTS TABLE UPDATED");
             });
+
+            connection.query("INSERT INTO " + table + " SET ?", {
+      			product_id: data.purchaseProductId,
+      			quantity_purchased: quantity,
+      			created_at: NOW()
+    		}, function(err, res) { 
+    			console.log('SALES TABLE UPDATED!')
+    		});
 		}
 
 
