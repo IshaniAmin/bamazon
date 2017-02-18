@@ -25,58 +25,66 @@ connection.query("SELECT * from products", function (error, results) {
 	};
 
 	console.log("\n");
-  	
-	inquirer.prompt([
-	  {
-	    type: "input",
-	    name: "purchaseProductId",
-	    message: "Input the number assocaited with product you want to by?"
-	  },
-	  {
-	    type: "input",
-	    name: "purchaseQuantity",
-	    message: "How many of this product you want to purchase?"
-	  },
-	]).then(function(data) {
 
-		var index = data.purchaseProductId - 1;
-		var product = results[index];
-		var quantity = data.purchaseQuantity;
+ 	buyProd(results);
 
-		if (product.stock_quantity <= 0) {
-			console.log("This product is out of stock!");
-		}
+ });
 
-		if (quantity > product.stock_quantity) {
-			console.log("Insufficient quantity!");
-		}
+ function buyProd(results){
+ 		inquirer.prompt([
+ 		  {
+ 		    type: "input",
+ 		    name: "purchaseProductId",
+ 		    message: "Input the number assocaited with product you want to by?"
+ 		  },
+ 		  {
+ 		    type: "input",
+ 		    name: "purchaseQuantity",
+ 		    message: "How many of this product you want to purchase?"
+ 		  },
+ 		]).then(function(data) {
 
-		if (quantity <= product.stock_quantity) {
-			console.log("Your purchse total is: $" + (quantity*product.price));
+ 			var index = data.purchaseProductId - 1;
+ 			var product = results[index];
+ 			var quantity = data.purchaseQuantity;
 
-			connection.query("UPDATE products SET ? WHERE ?", [{
-                stock_quantity: product.stock_quantity - quantity
-            }, {
-                id: product.id
-            }], function(err, res) {
-                if (err) throw err;
-                console.log("PRODUCTS TABLE UPDATED");
-            });
+ 			if (product.stock_quantity <= 0) {
+ 				console.log("This product is out of stock!");
+ 			}
 
-            connection.query("INSERT INTO " + table + " SET ?", {
-      			product_id: data.purchaseProductId,
-      			quantity_purchased: quantity,
-      			created_at: NOW()
-    		}, function(err, res) { 
-    			console.log('SALES TABLE UPDATED!')
-    		});
-		}
+ 			if (quantity > product.stock_quantity) {
+ 				console.log("Insufficient quantity!");
+ 			}
+
+ 			if (quantity <= product.stock_quantity) {
+ 				console.log("Your purchse total is: $" + (quantity*product.price));
+
+ 				var newQuant = product.stock_quantity - quantity;
 
 
-	});
+ 				connection.query("UPDATE products SET ? WHERE ?", [{
+ 	                stock_quantity: (product.stock_quantity - quantity)
+ 	            }, {
+ 	                id: product.id
+ 	            }], function(err, res) {
+ 	                if (err) throw err;
+ 	                console.log("PRODUCTS TABLE UPDATED");
+ 	            });
 
-});
+ 	            connection.query("INSERT INTO sales SET ?", {
+ 	      			product_id: data.purchaseProductId,
+ 	      			quantity_purchased: quantity,
+ 	      			// created_at: NOW()
+ 	    		}, function(err, res) { 
+ 	    			if (err) throw err;
+ 	    			console.log('SALES TABLE UPDATED!')
+ 	    		});
+ 			}
 
 
-connection.end();
+ 		});
+ 	}
+
+
+
 
