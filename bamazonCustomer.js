@@ -61,24 +61,25 @@ connection.query("SELECT * from products", function (error, results) {
 
  				var newQuant = product.stock_quantity - quantity;
 
-
+        // updates table to show new quantity
  				connection.query("UPDATE products SET ? WHERE ?", [{
- 	                stock_quantity: (product.stock_quantity - quantity)
- 	            }, {
- 	                id: product.id
- 	            }], function(err, res) {
- 	                if (err) throw err;
- 	                console.log("PRODUCTS TABLE UPDATED");
- 	            });
+ 	          stock_quantity: (product.stock_quantity - quantity)
+ 	        }, {
+ 	          id: product.id
+ 	      }], function(err, res) {
+ 	          if (err) throw err;
+ 	            console.log("PRODUCTS TABLE UPDATED");
+ 	        });
 
- 	            connection.query("INSERT INTO sales SET ?", {
- 	      			product_id: data.purchaseProductId,
- 	      			quantity_purchased: quantity,
- 	      			// created_at: NOW()
- 	    		}, function(err, res) { 
- 	    			if (err) throw err;
+        // inserts into sales table
+ 	      connection.query("INSERT INTO sales SET ?", {
+ 	      		product_id: data.purchaseProductId,
+ 	      		quantity_purchased: quantity,
+ 	      		// created_at: NOW()
+ 	    	}, function(err, res) { 
+ 	    		  if (err) throw err;
  	    			console.log('SALES TABLE UPDATED!')
- 	    		});
+ 	    	});
  			}
 
 
